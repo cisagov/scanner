@@ -1,0 +1,8 @@
+.git
+.gitignore
+docker-compose.yml
+LICENSE.md
+README.md
+secrets
+shared
+start.sh

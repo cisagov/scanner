@@ -1,0 +1,26 @@
+version: '3.2'
+
+secrets:
+  db.yml:
+    file: ./secrets/db.yml
+
+services:
+  scan:
+    image: 'dhub.ncats.dhs.gov:5001/sslyze-scan-scan'
+    # TODO: Move to Docker named volumes once we can mail
+    # scorecard/reports out programatically
+    volumes:
+      - ./shared:/home/shared/
+    dns:
+     - 8.8.8.8
+  save_to_db:
+    image: 'dhub.ncats.dhs.gov:5001/sslyze-scan-save_to_db'
+    secrets:
+      - source: db.yml
+    # TODO: Move to Docker named volumes once we can mail
+    # scorecard/reports out programatically
+    volumes:
+      - ./shared:/home/shared/
+
+  # TODO: Add new service to mail scorecard/reports out
+  # programatically
