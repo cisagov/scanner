@@ -5,7 +5,7 @@ echo "Creating artifacts folder..."
 mkdir -p $SHARED_DIR/artifacts/
 
 echo "Waiting for gatherer"
-while [ $(redis-cli -h orchestrator_redis_1 get gathering_complete) != "true" ]
+while [ "$(redis-cli -h orchestrator_redis_1 get gathering_complete)" != "true" ]
 do
     sleep 5
 done
