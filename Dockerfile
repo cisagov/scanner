@@ -39,7 +39,8 @@ RUN apt-get update -qq \
     llvm \
     libncursesw5-dev \
     nodejs \
-    npm
+    npm \
+    redis-tools
 
 ###
 ## Python
