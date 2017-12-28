@@ -11,24 +11,14 @@ do
 done
 echo "Gatherer finished"
 
-# No longer needed
-redis-cli -h orchestrator_redis_1 del gathering_complete
-
-# Run the scan
+# Run the https-scan scan
 echo "Running domain-scan/sslyze scan"
 cd $SHARED_DIR/artifacts/
-
-/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=pshtt --lambda --debug --cache --workers=400
-# Let redis know we're done
-redis-cli -h orchestrator_redis_1 set pshtt_scanning_complete true
-
-/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=trustymail --lambda --debug --cache --workers=400
-# Let redis know we're done
-redis-cli -h orchestrator_redis_1 set trustymail_scanning_complete true
-
-/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=sslyze --lambda --debug --cache --workers=400
-# Let redis know we're done
-redis-cli -h orchestrator_redis_1 set sslyze_scanning_complete true
+/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=pshtt,trustymail,sslyze --lambda --debug --cache --workers=800
 
 # Clean up files no longer needed
 rm -rf $SHARED_DIR/artifacts/cache
+
+# Let redis know we're done
+redis-cli -h orchestrator_redis_1 del gathering_complete
+redis-cli -h orchestrator_redis_1 set scanning_complete true
