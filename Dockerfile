@@ -106,7 +106,9 @@ RUN pip3 install --upgrade \
 ###
 # Install domain-scan
 ###
-RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
+RUN git clone https://github.com/jsf9k/domain-scan /home/scanner/domain-scan/ \
+    && cd /home/scanner/domain-scan \
+    && git checkout feature/sslyze_should_support_ports_other_than_443 \
     && pip3 install -r /home/scanner/domain-scan/requirements.txt \
     && pip3 install urllib3==1.21.1
 
