@@ -17,7 +17,8 @@ redis-cli -h orchestrator_redis_1 del gathering_complete
 # Run the https-scan scan
 echo "Running domain-scan scan"
 cd $SHARED_DIR/artifacts/
-/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=pshtt,trustymail,sslyze --lambda --debug --meta --cache --workers=400
+/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=pshtt --lambda --lambda-details --debug --meta --cache --workers=550
+/home/scanner/domain-scan/scan $SHARED_DIR/scanme.csv --scan=trustymail,sslyze --debug --meta --cache --workers=50
 
 # Clean up files no longer needed
 rm -rf $SHARED_DIR/artifacts/cache
