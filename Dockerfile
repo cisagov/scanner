@@ -91,14 +91,11 @@ RUN pip3 install --upgrade pip \
     && pip3 install --upgrade setuptools
 
 ##
-# Force pip to install sslyze from GitHub, so it depends on
-# cryptography 2.x and not 1.9. Also force pip to install the latest
-# pshtt and trustymail from GitHub.
+# Force pip to install the latest pshtt and trustymail from GitHub.
 #
-# Finally, install awscli via pip.
+# Also install awscli via pip.
 ##
 RUN pip3 install --upgrade \
-    git+https://github.com/nabla-c0d3/sslyze.git@master \
     git+https://github.com/dhs-ncats/pshtt.git@develop \
     git+https://github.com/dhs-ncats/trustymail.git@develop \
     awscli
