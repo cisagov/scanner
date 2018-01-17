@@ -26,8 +26,5 @@ mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts/pshtt.csv
 # Now put the pshtt results back
 mv $SHARED_DIR/artifacts/pshtt.csv $SHARED_DIR/artifacts/results/pshtt.csv
 
-# Clean up files no longer needed
-rm -rf $SHARED_DIR/artifacts/cache
-
 # Let redis know we're done
 redis-cli -h orchestrator_redis_1 set scanning_complete true
