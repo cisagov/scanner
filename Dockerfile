@@ -45,8 +45,8 @@ RUN apt-get update -qq \
 ###
 ## Python
 ###
-ENV PYENV_RELEASE=1.1.1 \
-    PYENV_PYTHON_VERSION=3.6.1 \
+ENV PYENV_RELEASE=1.2.1 \
+    PYENV_PYTHON_VERSION=3.6.4 \
     PYENV_ROOT=/opt/pyenv \
     PYENV_REPO=https://github.com/pyenv/pyenv
 
