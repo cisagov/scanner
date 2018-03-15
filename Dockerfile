@@ -87,8 +87,7 @@ RUN echo 'eval "$(pyenv init -)"' >> /etc/profile \
 ##
 # Make sure pip and setuptools are the latest versions
 ##
-RUN pip3 install --upgrade pip \
-    && pip3 install --upgrade setuptools
+RUN pip3 install --upgrade pip setuptools
 
 ##
 # Force pip to install the latest pshtt and trustymail from GitHub.
@@ -104,7 +103,7 @@ RUN pip3 install --upgrade \
 # Install domain-scan
 ###
 RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
-    && pip3 install -r /home/scanner/domain-scan/requirements.txt \
+    && pip3 install --upgrade -r /home/scanner/domain-scan/requirements.txt \
     && pip3 install urllib3==1.21.1
 
 ###
