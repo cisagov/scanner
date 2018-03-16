@@ -18,13 +18,7 @@ redis-cli -h orchestrator_redis_1 del gathering_complete
 # Run the https-scan scan
 echo "Running domain-scan scan"
 cd $SHARED_DIR/artifacts/
-/home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv --scan=pshtt --lambda --debug --meta --cache --workers=550
-# domain-scan removes all existing CSV result files before starting a
-# new scan, so we need to stash the pshtt results in a safe place
-mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts/pshtt.csv
-/home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv --scan=trustymail,sslyze --debug --meta --cache --workers=50
-# Now put the pshtt results back
-mv $SHARED_DIR/artifacts/pshtt.csv $SHARED_DIR/artifacts/results/pshtt.csv
+/home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv --scan=pshtt,trustymail,sslyze --lambda --debug --meta --cache --workers=550
 
 # Let redis know we're done
 redis-cli -h orchestrator_redis_1 set scanning_complete true
