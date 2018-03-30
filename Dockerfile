@@ -45,7 +45,7 @@ RUN apt-get update -qq \
 ###
 ## Python
 ###
-ENV PYENV_RELEASE=1.2.1 \
+ENV PYENV_RELEASE=1.2.2 \
     PYENV_PYTHON_VERSION=3.6.4 \
     PYENV_ROOT=/opt/pyenv \
     PYENV_REPO=https://github.com/pyenv/pyenv
@@ -87,7 +87,7 @@ RUN echo 'eval "$(pyenv init -)"' >> /etc/profile \
 ##
 # Make sure pip and setuptools are the latest versions
 ##
-RUN pip3 install --upgrade pip setuptools
+RUN pip install --upgrade pip setuptools
 
 ##
 # Force pip to install the latest pshtt and trustymail from GitHub.
@@ -103,8 +103,7 @@ RUN pip3 install --upgrade \
 # Install domain-scan
 ###
 RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
-    && pip3 install --upgrade -r /home/scanner/domain-scan/requirements.txt \
-    && pip3 install urllib3==1.21.1
+    && pip install --upgrade -r /home/scanner/domain-scan/requirements.txt
 
 ###
 # Create unprivileged User
