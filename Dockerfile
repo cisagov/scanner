@@ -90,14 +90,15 @@ RUN echo 'eval "$(pyenv init -)"' >> /etc/profile \
 RUN pip install --upgrade pip setuptools
 
 ##
-# Force pip to install the latest pshtt and trustymail from GitHub.
+# Force pip to install the latest pshtt from GitHub.
 #
-# Also install awscli via pip.
+# We only need this because the pshtt.py and sslyze.py files in the
+# scanners directory of 18F/domain-scan import pshtt and sslyze,
+# respectively, at the top of the file.  (trustymail imports only in
+# the scan function, so it isn't required here.)
 ##
 RUN pip3 install --upgrade \
-    git+https://github.com/dhs-ncats/pshtt.git@develop \
-    git+https://github.com/dhs-ncats/trustymail.git@develop \
-    awscli
+    git+https://github.com/dhs-ncats/pshtt.git@develop
 
 ###
 # Install domain-scan
