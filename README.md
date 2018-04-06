@@ -1,5 +1,7 @@
 # NCATS pshtt, trustymail, and sslyze Scanner :eyes: :eyeglasses: #
 
+[![Build Status](https://travis-ci.org/dhs-ncats/scanner.svg?branch=master)](https://travis-ci.org/dhs-ncats/scanner)
+
 This is a Docker container that uses
 [domain-scan](https://github.com/18F/domain-scan) to scan domains
 using [pshtt](https://github.com/dhs-ncats/pshtt),

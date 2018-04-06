@@ -2,3 +2,6 @@
 .gitignore
 LICENSE.md
 README.md
+bump_version.sh
+tag.sh
+travis_scripts
