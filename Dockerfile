@@ -90,15 +90,13 @@ RUN echo 'eval "$(pyenv init -)"' >> /etc/profile \
 RUN pip install --upgrade pip setuptools
 
 ##
-# Force pip to install the latest pshtt from GitHub.
-#
-# We only need this because the pshtt.py and sslyze.py files in the
-# scanners directory of 18F/domain-scan import pshtt and sslyze,
-# respectively, at the top of the file.  (trustymail imports only in
-# the scan function, so it isn't required here.)
+# We're using Lambda, but we need to install pshtt locally because the
+# pshtt.py and sslyze.py files in the scanners directory of
+# 18F/domain-scan import pshtt and sslyze, respectively, at the top of
+# the file.  (trustymail imports only in the scan function, so it
+# isn't required here.)
 ##
-RUN pip3 install --upgrade \
-    git+https://github.com/dhs-ncats/pshtt.git@develop
+RUN pip install --upgrade pshtt==0.4.1
 
 ###
 # Install domain-scan
