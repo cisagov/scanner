@@ -101,7 +101,7 @@ RUN pip install --upgrade pshtt==0.4.1
 ###
 # Install domain-scan
 ###
-RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
+RUN git clone -b improvement/smtp_cache https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
     && pip install --upgrade -r /home/scanner/domain-scan/requirements.txt
 
 ###
