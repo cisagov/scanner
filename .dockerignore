@@ -1,5 +1,6 @@
 .git
 .gitignore
+.python-version
 LICENSE.md
 README.md
 bump_version.sh
