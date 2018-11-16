@@ -13,7 +13,7 @@ done
 echo "Gatherer finished"
 
 # No longer needed
-redis-cli -h orchestrator_redis_1 del gathering_complete
+redis-cli -h redis del gathering_complete
 
 # Run the https-scan scan
 echo "Running domain-scan scan"
