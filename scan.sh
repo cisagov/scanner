@@ -18,7 +18,30 @@ redis-cli -h redis del gathering_complete
 # Run the https-scan scan
 echo "Running domain-scan scan"
 cd $SHARED_DIR/artifacts/
-/home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv --scan=pshtt,trustymail,sslyze --lambda --debug --meta --cache --workers=550
+/home/scanner/domain-scan/scan \
+    $SHARED_DIR/artifacts/scanme_no_ocsp_crl.csv \
+    --scan=pshtt --lambda --debug --meta --cache --workers=550
+# domain-scan removes all existing CSV result files before starting a
+# new scan, so we need to stash the pshtt results in a safe place
+mv $SHARED_DIR/artifacts/results/pshtt.csv \
+   $SHARED_DIR/artifacts/pshtt.csv
+
+/home/scanner/domain-scan/scan \
+    $SHARED_DIR/artifacts/scanme_include_ocsp_crl.csv \
+    --scan=trustymail --lambda --debug --meta --cache --workers=550
+# domain-scan removes all existing CSV result files before starting a
+# new scan, so we need to stash the trustymail results in a safe place
+mv $SHARED_DIR/artifacts/results/trustymail.csv \
+   $SHARED_DIR/artifacts/trustymail.csv
+
+/home/scanner/domain-scan/scan \
+    $SHARED_DIR/artifacts/scanme_include_ocsp_crl.csv \
+    --scan=sslyze --lambda --debug --meta --cache --workers=550
+
+# Now put the pshtt and trustymail results back
+mv $SHARED_DIR/artifacts/pshtt.csv \
+   $SHARED_DIR/artifacts/trustymail.csv \
+   $SHARED_DIR/artifacts/results/
 
 # Let redis know we're done
 redis-cli -h redis set scanning_complete true
