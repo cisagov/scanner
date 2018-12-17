@@ -105,7 +105,7 @@ RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
     && pip install --upgrade -r /home/scanner/domain-scan/requirements.txt
 
 ###
-# Create unprivileged User
+# Create unprivileged user
 ###
 ENV SCANNER_HOME=/home/scanner
 RUN groupadd -r scanner \
