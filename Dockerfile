@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Shane Frasier <jeremy.frasier@beta.dhs.gov>
+MAINTAINER Shane Frasier <jeremy.frasier@trio.dhs.gov>
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8
