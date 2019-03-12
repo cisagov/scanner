@@ -18,7 +18,15 @@ redis-cli -h orchestrator_redis_1 del gathering_complete
 # Run the https-scan scan
 echo "Running domain-scan scan"
 cd $SHARED_DIR/artifacts/
-/home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv --scan=pshtt,trustymail,sslyze --lambda  --lambda-retries=1 --debug --meta --cache --workers=100
+/home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
+                               --scan=pshtt,trustymail,sslyze \
+                               --lambda  \
+                               --lambda-retries=1 \
+                               --debug \
+                               --meta \
+                               --cache \
+                               --workers=100 \
+                               --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
 
 # Let redis know we're done
 redis-cli -h redis set scanning_complete true
