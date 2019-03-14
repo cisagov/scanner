@@ -25,7 +25,7 @@ cd $SHARED_DIR/artifacts/
                                --debug \
                                --meta \
                                --cache \
-                               --workers=100 \
+                               --workers=50 \
                                --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
 
 # Let redis know we're done
