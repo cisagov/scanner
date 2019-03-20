@@ -96,7 +96,7 @@ RUN pip install --upgrade pip setuptools
 # the file.  (trustymail imports only in the scan function, so it
 # isn't required here.)
 ##
-RUN pip install --upgrade pshtt==0.6.0
+RUN pip install --upgrade pshtt==0.6.1
 
 ###
 # Install domain-scan
