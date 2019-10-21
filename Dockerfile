@@ -14,7 +14,7 @@ LABEL url="https://github.com/cisagov/scanner"
 ###
 ENV DEPS \
     bash \
-    redis
+    redis-tools
 ENV INSTALL_DEPS \
     curl \
     git
