@@ -1,126 +1,85 @@
-FROM ubuntu:16.04
-MAINTAINER Shane Frasier <jeremy.frasier@trio.dhs.gov>
-
-ENV DEBIAN_FRONTEND=noninteractive \
-    LANG=C.UTF-8
+###
+# Install everything we need
+###
+FROM python:3.6-slim-buster AS install
+LABEL maintainer="jeremy.frasier@trio.dhs.gov"
+LABEL organization="CISA Cyber Assessments"
+LABEL url="https://github.com/cisagov/scanner"
 
 ###
 # Dependencies
+#
+# Build dependencies are only needed to build the Dockerfile and will
+# be removed at the end of the build process.
 ###
-RUN apt-get update -qq \
-    && apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-    build-essential \
+ENV DEPS \
+    bash \
+    redis
+ENV INSTALL_DEPS \
     curl \
-    git \
-    libc6-dev \
-    libfontconfig1 \
-    libreadline-dev \
-    libssl-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    libyaml-dev \
-    make \
-    unzip \
-    wget \
-    zlib1g-dev \
-    autoconf \
-    automake \
-    bison \
-    gawk \
-    libffi-dev \
-    libgdbm-dev \
-    libncurses5-dev \
-    libsqlite3-dev \
-    libtool \
-    pkg-config \
-    sqlite3 \
-    libgeos-dev \
-    libbz2-dev \
-    llvm \
-    libncursesw5-dev \
-    nodejs \
-    npm \
-    redis-tools
+    git
+RUN apt-get update --quiet --quiet
+RUN apt-get upgrade --quiet --quiet
+RUN apt-get install --quiet --quiet --yes \
+    --no-install-recommends --no-install-suggests \
+    ${DEPS} ${INSTALL_DEPS}
 
 ###
-## Python
-###
-ENV PYENV_RELEASE=1.2.2 \
-    PYENV_PYTHON_VERSION=3.6.4 \
-    PYENV_ROOT=/opt/pyenv \
-    PYENV_REPO=https://github.com/pyenv/pyenv
-
-RUN wget ${PYENV_REPO}/archive/v${PYENV_RELEASE}.zip \
-      --no-verbose \
-    && unzip v$PYENV_RELEASE.zip -d $PYENV_ROOT \
-    && mv $PYENV_ROOT/pyenv-$PYENV_RELEASE/* $PYENV_ROOT/ \
-    && rm -r $PYENV_ROOT/pyenv-$PYENV_RELEASE
-
-#
-# Uncomment these lines if you just want to install python...
-#
-ENV PATH=$PYENV_ROOT/bin:$PYENV_ROOT/versions/${PYENV_PYTHON_VERSION}/bin:$PATH
-RUN echo 'eval "$(pyenv init -)"' >> /etc/profile \
-    && eval "$(pyenv init -)" \
-    && pyenv install $PYENV_PYTHON_VERSION \
-    && pyenv local ${PYENV_PYTHON_VERSION}
-
-#
-# ...uncomment these lines if you want to also debug python code in GDB
-#
-# ENV PATH=$PYENV_ROOT/bin:$PYENV_ROOT/versions/${PYENV_PYTHON_VERSION}-debug/bin:$PATH
-# RUN echo 'eval "$(pyenv init -)"' >> /etc/profile \
-#     && eval "$(pyenv init -)" \
-#     && pyenv install --debug --keep $PYENV_PYTHON_VERSION \
-#     && pyenv local ${PYENV_PYTHON_VERSION}-debug
-# RUN ln -s /opt/pyenv/sources/${PYENV_PYTHON_VERSION}-debug/Python-${PYENV_PYTHON_VERSION}/python-gdb.py \
-#     /opt/pyenv/versions/${PYENV_PYTHON_VERSION}-debug/bin/python3.6-gdb.py \
-#     && ln -s /opt/pyenv/sources/${PYENV_PYTHON_VERSION}-debug/Python-${PYENV_PYTHON_VERSION}/python-gdb.py \
-#     /opt/pyenv/versions/${PYENV_PYTHON_VERSION}-debug/bin/python3-gdb.py \
-#     && ln -s /opt/pyenv/sources/${PYENV_PYTHON_VERSION}-debug/Python-${PYENV_PYTHON_VERSION}/python-gdb.py \
-#     /opt/pyenv/versions/${PYENV_PYTHON_VERSION}-debug/bin/python-gdb.py
-# RUN apt-get -qq --yes --no-install-recommends --no-install-suggests install gdb
-# RUN echo add-auto-load-safe-path \
-#     /opt/pyenv/sources/${PYENV_PYTHON_VERSION}-debug/Python-${PYENV_PYTHON_VERSION}/ \
-#     >> etc/gdb/gdbinit
-
-##
 # Make sure pip and setuptools are the latest versions
-##
-RUN pip install --upgrade pip setuptools
+###
+RUN pip install --no-cache-dir --upgrade pip setuptools
 
-##
+###
 # We're using Lambda, but we need to install pshtt locally because the
 # pshtt.py and sslyze.py files in the scanners directory of
 # 18F/domain-scan import pshtt and sslyze, respectively, at the top of
 # the file.  (trustymail imports only in the scan function, so it
 # isn't required here.)
-##
-RUN pip install --upgrade pshtt==0.6.6
+###
+RUN pip install --no-cache-dir --upgrade pshtt==0.6.6
 
 ###
 # Install domain-scan
 ###
-RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/ \
-    && pip install --upgrade -r /home/scanner/domain-scan/requirements.txt
+RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/
+RUN pip install --no-cache-dir --upgrade \
+    --requirement /home/scanner/domain-scan/requirements.txt
+
+###
+# Remove build dependencies
+###
+RUN apt-get remove --quiet --quiet ${BUILD_DEPS}
+
+###
+# Clean up aptitude cruft
+###
+RUN apt-get --quiet --quiet clean
+RUN rm -rf /var/lib/apt/lists/*
+
+
+###
+# Setup the scanner user and its home directory
+###
+FROM install AS setup_user
 
 ###
 # Create unprivileged user
 ###
 ENV SCANNER_HOME=/home/scanner
-RUN groupadd -r scanner \
-    && useradd -r -c "Scanner user" -g scanner scanner
-
-# It would be nice to get rid of some build dependencies at this point
-
-# Clean up aptitude cruft
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN groupadd -r scanner
+RUN useradd -r -c "Scanner user" -g scanner scanner
 
 # Put this just before we change users because the copy (and every
 # step after it) will always be rerun by docker, but we need to be
 # root for the chown command.
 COPY . $SCANNER_HOME
 RUN chown -R scanner:scanner ${SCANNER_HOME}
+
+
+###
+# Setup working directory and entrypoint
+###
+FROM setup_user AS final
 
 ###
 # Prepare to Run
