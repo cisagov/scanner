@@ -28,7 +28,7 @@ cd $SHARED_DIR/artifacts/ || exit
 # See this link for more information about this VPC DNS limitation:
 # https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-limits
 #
-# See this link for an explanation as to why thw VPC DNS limitation
+# See this link for an explanation as to why the VPC DNS limitation
 # was not initially a concern:
 # https://aws.amazon.com/blogs/compute/announcing-improved-vpc-networking-for-aws-lambda-functions/
 /home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
