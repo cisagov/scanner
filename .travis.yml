@@ -5,7 +5,7 @@ services:
 
 env:
   global:
-    - IMAGE_NAME=dhsncats/scanner
+    - IMAGE_NAME=cisagov/scanner
     - DOCKER_USER=jsf9k
     - secure: "V7SZ7Er71+ECoFr1NvP3ggpg4lORrAdat1o9WThpdHR84gQFGQVhcZ+9hZR76yKtaktRzHSxSe9M0r2YcSlURVCjmtyp6+5SRiVCkIcg/3JcjcXq38DKWzHQfOdWd2ZLf7PW/CGTr/lbxdAt7SpkavRU4i4QaBmg8FKNbGvbvMoIyRiKmOLW3f7+H0pSuAKFC71+T16G/YiGHsZFonrLTvXOhScD42fY44yMG9DeHoL7osl+JgmOGkBHe+EzZ1S0SUDSzq78wtUUoiHqkA9LEo9NqMZaCFo6vlYOmzvA0AxiyErCM1xpKfN6vFwwhh6yuTGaOP+Bcdtb/gUv6GlPF0zyfPzvksA7sdxFxF9shO9Ykft9agU3fDvfesORJVqBvoYlxfnINhtRxeLsA2hhtxfvgMYqHSqePYCGiGltdl7UKP7p25HHD0x3EXCPtxHrLZ6t9l7gUHi1seMQoWmo6wUQhVB89F1vhLNN1zjsnUOVMTaDeHZdLoyWoP5Jn8dj+FlG1NHWAR8+ZIj0ZBKdzNE25y+MMZYybq5LbYkzc1oAGzNqeRCa/FD1CasnoMBBhny3ZjwzmVvTywqUdEKVYPzygW/nop6uVYyWHIgOoKQ7lujlWo4QIcjj4c4iubiL9qaW1efXfMZA4M1k2C+IZXvKUIzSq1tDLgj9Q+umpho="
 
