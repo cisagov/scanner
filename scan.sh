@@ -39,6 +39,9 @@ cd $SHARED_DIR/artifacts/ || exit
                                --meta \
                                --cache \
                                --workers=50
+# This file would get deleted when we rerun domain-scan/scan if it
+# stayed where it is
+mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts
 /home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
                                --scan=trustymail \
                                --lambda  \
@@ -48,6 +51,9 @@ cd $SHARED_DIR/artifacts/ || exit
                                --cache \
                                --workers=25 \
                                --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
+# This file would get deleted when we rerun domain-scan/scan if it
+# stayed where it is
+mv $SHARED_DIR/artifacts/results/trustymail.csv $SHARED_DIR/artifacts
 /home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
                                --scan=sslyze \
                                --lambda  \
@@ -56,6 +62,8 @@ cd $SHARED_DIR/artifacts/ || exit
                                --meta \
                                --cache \
                                --workers=50
+# Restore the files that we had temporarily copied to a safe place
+mv $SHARED_DIR/artifacts/{pshtt,trustymail}.csv $SHARED_DIR/artifacts/results
 
 # Let redis know we're done
 redis-cli -h redis set scanning_complete true
