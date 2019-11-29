@@ -11,8 +11,8 @@ ENV HOME=/home/scanner
 ###
 # Dependencies
 #
-# Build dependencies are only needed to build the Dockerfile and will
-# be removed at the end of the build process.
+# Install dependencies are only needed for software installation and
+# will be removed at the end of the build process.
 ###
 ENV DEPS \
     bash \
