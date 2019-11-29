@@ -6,6 +6,8 @@ LABEL maintainer="jeremy.frasier@trio.dhs.gov"
 LABEL organization="CISA Cyber Assessments"
 LABEL url="https://github.com/cisagov/scanner"
 
+ENV HOME=/home/scanner
+
 ###
 # Dependencies
 #
@@ -22,7 +24,7 @@ RUN apt-get update --quiet --quiet
 RUN apt-get upgrade --quiet --quiet
 RUN apt-get install --quiet --quiet --yes \
     --no-install-recommends --no-install-suggests \
-    ${DEPS} ${INSTALL_DEPS}
+    $DEPS $INSTALL_DEPS
 
 ###
 # Make sure pip and setuptools are the latest versions
@@ -41,14 +43,15 @@ RUN pip install --no-cache-dir --upgrade pshtt==0.6.6
 ###
 # Install domain-scan
 ###
-RUN git clone https://github.com/18F/domain-scan /home/scanner/domain-scan/
+RUN git clone https://github.com/18F/domain-scan \
+    ${HOME}/domain-scan/
 RUN pip install --no-cache-dir --upgrade \
-    --requirement /home/scanner/domain-scan/requirements.txt
+    --requirement ${HOME}/domain-scan/requirements.txt
 
 ###
 # Remove build dependencies
 ###
-RUN apt-get remove --quiet --quiet ${BUILD_DEPS}
+RUN apt-get remove --quiet --quiet $BUILD_DEPS
 
 ###
 # Clean up aptitude cruft
@@ -65,15 +68,14 @@ FROM install AS setup_user
 ###
 # Create unprivileged user
 ###
-ENV SCANNER_HOME=/home/scanner
 RUN groupadd -r scanner
 RUN useradd -r -c "Scanner user" -g scanner scanner
 
 # Put this just before we change users because the copy (and every
 # step after it) will always be rerun by docker, but we need to be
 # root for the chown command.
-COPY . $SCANNER_HOME
-RUN chown -R scanner:scanner ${SCANNER_HOME}
+COPY . $HOME
+RUN chown -R scanner:scanner $HOME
 
 
 ###
@@ -87,5 +89,5 @@ FROM setup_user AS final
 # Right now we need to be root at runtime in order to create files in
 # /home/shared
 # USER scanner:scanner
-WORKDIR $SCANNER_HOME
+WORKDIR $HOME
 ENTRYPOINT ["./scan.sh"]
