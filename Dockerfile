@@ -7,6 +7,7 @@ LABEL organization="CISA Cyber Assessments"
 LABEL url="https://github.com/cisagov/scanner"
 
 ENV HOME=/home/scanner
+ENV USER=scanner
 
 ###
 # Dependencies
@@ -61,21 +62,21 @@ RUN rm -rf /var/lib/apt/lists/*
 
 
 ###
-# Setup the scanner user and its home directory
+# Setup the user and its home directory
 ###
 FROM install AS setup_user
 
 ###
 # Create unprivileged user
 ###
-RUN groupadd -r scanner
-RUN useradd -r -c "Scanner user" -g scanner scanner
+RUN groupadd -r $USER
+RUN useradd -r -c "$USER user" -g $USER $USER
 
 # Put this just before we change users because the copy (and every
 # step after it) will always be rerun by docker, but we need to be
 # root for the chown command.
 COPY . $HOME
-RUN chown -R scanner:scanner $HOME
+RUN chown -R ${USER}:${USER} $HOME
 
 
 ###
@@ -88,6 +89,6 @@ FROM setup_user AS final
 ###
 # Right now we need to be root at runtime in order to create files in
 # /home/shared
-# USER scanner:scanner
+# USER ${USER}:${USER}
 WORKDIR $HOME
 ENTRYPOINT ["./scan.sh"]
