@@ -12,6 +12,9 @@ ENV USER=scanner
 ###
 # Dependencies
 #
+# We need redis-tools so we can use redis-cli to communicate with
+# redis.
+#
 # Install dependencies are only needed for software installation and
 # will be removed at the end of the build process.
 ###
@@ -19,7 +22,6 @@ ENV DEPS \
     bash \
     redis-tools
 ENV INSTALL_DEPS \
-    curl \
     git
 RUN apt-get update --quiet --quiet
 RUN apt-get upgrade --quiet --quiet
