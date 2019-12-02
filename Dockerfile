@@ -30,7 +30,11 @@ RUN apt-get install --quiet --quiet --yes \
     $DEPS $INSTALL_DEPS
 
 ###
-# Make sure pip and setuptools are the latest versions
+# Make sure pip and setuptools are the latest versions.
+#
+# Note that we use pip --no-cache-dir to avoid writing to a local
+# cache.  This results in a smaller final image, at the cost of
+# slightly longer install times.
 ###
 RUN pip install --no-cache-dir --upgrade pip setuptools
 
