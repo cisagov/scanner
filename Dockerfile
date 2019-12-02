@@ -52,9 +52,9 @@ RUN pip install --no-cache-dir --upgrade \
     --requirement ${HOME}/domain-scan/requirements.txt
 
 ###
-# Remove build dependencies
+# Remove install dependencies
 ###
-RUN apt-get remove --quiet --quiet $BUILD_DEPS
+RUN apt-get remove --quiet --quiet $INSTALL_DEPS
 
 ###
 # Clean up aptitude cruft
