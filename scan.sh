@@ -38,7 +38,7 @@ cd $SHARED_DIR/artifacts/ || exit
                                --debug \
                                --meta \
                                --cache \
-                               --workers=50
+                               --workers=40
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
 mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts
@@ -61,7 +61,7 @@ mv $SHARED_DIR/artifacts/results/trustymail.csv $SHARED_DIR/artifacts
                                --debug \
                                --meta \
                                --cache \
-                               --workers=50
+                               --workers=40
 # Restore the files that we had temporarily copied to a safe place
 mv $SHARED_DIR/artifacts/{pshtt,trustymail}.csv $SHARED_DIR/artifacts/results
 
