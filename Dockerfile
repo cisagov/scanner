@@ -1,7 +1,7 @@
 ###
 # Install everything we need
 ###
-FROM python:3.6-slim-buster AS install
+FROM python:3.10.5-slim-buster AS install
 LABEL maintainer="jeremy.frasier@trio.dhs.gov"
 LABEL organization="CISA Cyber Assessments"
 LABEL url="https://github.com/cisagov/scanner"
