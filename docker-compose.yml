@@ -4,34 +4,22 @@ version: "3.7"
 # This Docker composition file is used to build and test the container
 
 secrets:
-  quote_txt:
-    file: ./src/secrets/quote.txt
+  aws_config:
+    file: ./src/secrets/aws_config
 
 services:
-  example:
+  scanner:
     # Run the container normally
     build:
-      # VERSION must be specified on the command line:
-      # e.g., --build-arg VERSION=0.0.1
       context: .
       dockerfile: Dockerfile
-    image: cisagov/example
+    depends_on:
+      - redis
+    image: cisagov/scanner
     init: true
     restart: "no"
-    environment:
-      - ECHO_MESSAGE=Hello World from docker compose!
-    ports:
-      - target: 8080
-        published: 8080
-        protocol: tcp
-        mode: host
     secrets:
-      - source: quote_txt
-        target: quote.txt
-
-  example-version:
-    # Run the container to collect version information
-    image: cisagov/example
-    init: true
-    restart: "no"
-    command: --version
+      - source: aws_config
+        target: aws_config
+  redis:
+    image: redis:alpine
