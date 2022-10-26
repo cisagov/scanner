@@ -15,7 +15,7 @@ def main_container(dockerc):
     return dockerc.containers(service_names=[MAIN_SERVICE_NAME], stopped=True)[0]
 
 
-# See #??
+# See #64
 # @pytest.fixture(scope="session")
 # def version_container(dockerc):
 #     """Return the version container from the Docker composition.

@@ -1,7 +1,7 @@
 #!/usr/bin/env pytest -vs
 """Tests for scanner container."""
 # TODO: Make container tests functional
-# See https://github.com/cisagov/scanner/issues/??
+# See https://github.com/cisagov/scanner/issues/64
 
 
 def test_container_count(dockerc):
@@ -13,6 +13,7 @@ def test_container_count(dockerc):
     ), "Wrong number of containers were started."
 
 
+# See #64
 # def test_wait_for_ready(main_container):
 #     """Wait for container to be ready."""
 #     TIMEOUT = 10
@@ -27,6 +28,7 @@ def test_container_count(dockerc):
 #         )
 
 
+# See #64
 # def test_wait_for_exits(main_container, version_container):
 #     """Wait for containers to exit."""
 #     assert main_container.wait() == 0, "Container service (main) did not exit cleanly"
@@ -35,6 +37,7 @@ def test_container_count(dockerc):
 #     ), "Container service (version) did not exit cleanly"
 
 
+# See #64
 # def test_output(main_container):
 #     """Verify the container had the correct output."""
 #     main_container.wait()  # make sure container exited if running test isolated
@@ -42,6 +45,7 @@ def test_container_count(dockerc):
 #     assert SECRET_QUOTE in log_output, "Secret not found in log output."
 
 
+# See #64
 # @pytest.mark.skipif(
 #     RELEASE_TAG in [None, ""], reason="this is not a release (RELEASE_TAG not set)"
 # )
@@ -56,6 +60,7 @@ def test_container_count(dockerc):
 #     ), "RELEASE_TAG does not match the project version"
 
 
+# See #64
 # def test_log_version(version_container):
 #     """Verify the container outputs the correct version to the logs."""
 #     version_container.wait()  # make sure container exited if running test isolated
@@ -69,6 +74,7 @@ def test_container_count(dockerc):
 #     ), f"Container version output to log does not match project version file {VERSION_FILE}"
 
 
+# See #64
 # def test_container_version_label_matches(version_container):
 #     """Verify the container version label is the correct version."""
 #     pkg_vars = {}
