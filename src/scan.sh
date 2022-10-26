@@ -6,9 +6,8 @@ echo "Creating artifacts folder..."
 mkdir -p $SHARED_DIR/artifacts/
 
 echo "Waiting for gatherer"
-while [ "$(redis-cli -h redis get gathering_complete)" != "true" ]
-do
-    sleep 5
+while [ "$(redis-cli -h redis get gathering_complete)" != "true" ]; do
+  sleep 5
 done
 echo "Gatherer finished"
 
@@ -32,36 +31,36 @@ cd $SHARED_DIR/artifacts/ || exit
 # was not initially a concern:
 # https://aws.amazon.com/blogs/compute/announcing-improved-vpc-networking-for-aws-lambda-functions/
 /home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
-                               --scan=pshtt \
-                               --lambda  \
-                               --lambda-retries=1 \
-                               --debug \
-                               --meta \
-                               --cache \
-                               --workers=40
+  --scan=pshtt \
+  --lambda \
+  --lambda-retries=1 \
+  --debug \
+  --meta \
+  --cache \
+  --workers=40
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
 mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts
 /home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
-                               --scan=trustymail \
-                               --lambda  \
-                               --lambda-retries=1 \
-                               --debug \
-                               --meta \
-                               --cache \
-                               --workers=25 \
-                               --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
+  --scan=trustymail \
+  --lambda \
+  --lambda-retries=1 \
+  --debug \
+  --meta \
+  --cache \
+  --workers=25 \
+  --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
 mv $SHARED_DIR/artifacts/results/trustymail.csv $SHARED_DIR/artifacts
 /home/scanner/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
-                               --scan=sslyze \
-                               --lambda  \
-                               --lambda-retries=1 \
-                               --debug \
-                               --meta \
-                               --cache \
-                               --workers=40
+  --scan=sslyze \
+  --lambda \
+  --lambda-retries=1 \
+  --debug \
+  --meta \
+  --cache \
+  --workers=40
 # Restore the files that we had temporarily copied to a safe place
 mv $SHARED_DIR/artifacts/{pshtt,trustymail}.csv $SHARED_DIR/artifacts/results
 
