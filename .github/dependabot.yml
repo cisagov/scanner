@@ -1,0 +1,40 @@
+---
+
+# Any ignore directives should be uncommented in downstream projects to disable
+# Dependabot updates for the given dependency. Downstream projects will get
+# these updates when the pull request(s) in the appropriate skeleton are merged
+# and Lineage processes these changes.
+
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: actions/cache
+      - dependency-name: actions/checkout
+      - dependency-name: actions/setup-python
+      # Managed by cisagov/skeleton-docker
+      # - dependency-name: actions/download-artifact
+      # - dependency-name: actions/github-script
+      # - dependency-name: actions/upload-artifact
+      # - dependency-name: docker/build-push-action
+      # - dependency-name: docker/login-action
+      # - dependency-name: docker/setup-buildx-action
+      # - dependency-name: docker/setup-qemu-action
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directory: "/"
+    schedule:
+      interval: "weekly"

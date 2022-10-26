@@ -1,26 +1,44 @@
+ARG VERSION=unspecified
+
+FROM python:3.6-slim-buster
+
+ARG VERSION
+
+# For a list of pre-defined annotation keys and value types see:
+# https://github.com/opencontainers/image-spec/blob/master/annotations.md
+# Note: Additional labels are added by the build workflow.
+LABEL org.opencontainers.image.authors="jeremy.frasier@cisa.dhs.gov"
+LABEL org.opencontainers.image.vendor="Cybersecurity and Infrastructure Security Agency"
+
+ARG CISA_GID=421
+ARG CISA_UID=${CISA_GID}
+ENV CISA_USER="cisa"
+ENV CISA_GROUP=${CISA_USER}
+ENV CISA_HOME="/home/cisa"
+
+###
+# Create unprivileged user
+###
+RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP}
+RUN useradd --system --uid ${CISA_UID} --gid ${CISA_GROUP} --comment "${CISA_USER} user" ${CISA_USER}
+
 ###
 # Install everything we need
 ###
-FROM python:3.6-slim-buster AS install
-LABEL maintainer="jeremy.frasier@trio.dhs.gov"
-LABEL organization="CISA Cyber Assessments"
-LABEL url="https://github.com/cisagov/scanner"
-
-ENV HOME=/home/scanner
-ENV USER=scanner
 
 ###
 # Dependencies
 #
 # We need redis-tools so we can use redis-cli to communicate with
-# redis.
+# redis.  wget is used inside of gather-domains.sh.
 #
 # Install dependencies are only needed for software installation and
 # will be removed at the end of the build process.
 ###
 ENV DEPS \
     bash \
-    redis-tools
+    redis-tools \
+    wget
 ENV INSTALL_DEPS \
     git
 RUN apt-get update --quiet --quiet
@@ -30,7 +48,7 @@ RUN apt-get install --quiet --quiet --yes \
     $DEPS $INSTALL_DEPS
 
 ###
-# Make sure pip and setuptools are the latest versions.
+# Make sure pip and setuptools are the latest versions
 #
 # Note that we use pip --no-cache-dir to avoid writing to a local
 # cache.  This results in a smaller final image, at the cost of
@@ -51,9 +69,9 @@ RUN pip install --no-cache-dir --upgrade pshtt==0.6.6
 # Install domain-scan
 ###
 RUN git clone https://github.com/18F/domain-scan \
-    ${HOME}/domain-scan/
+    ${CISA_HOME}/domain-scan/
 RUN pip install --no-cache-dir --upgrade \
-    --requirement ${HOME}/domain-scan/requirements.txt
+    --requirement ${CISA_HOME}/domain-scan/requirements.txt
 
 ###
 # Remove install dependencies
@@ -68,33 +86,20 @@ RUN rm -rf /var/lib/apt/lists/*
 
 
 ###
-# Setup the user and its home directory
+# Setup working directory and entrypoint
 ###
-FROM install AS setup_user
-
-###
-# Create unprivileged user
-###
-RUN groupadd -r $USER
-RUN useradd -r -c "$USER user" -g $USER $USER
 
 # Put this just before we change users because the copy (and every
 # step after it) will always be rerun by docker, but we need to be
 # root for the chown command.
-COPY . $HOME
-RUN chown -R ${USER}:${USER} $HOME
-
-
-###
-# Setup working directory and entrypoint
-###
-FROM setup_user AS final
+COPY src ${CISA_HOME}
+RUN chown -R ${CISA_USER}:${CISA_GROUP} ${CISA_HOME}
 
 ###
 # Prepare to Run
 ###
 # Right now we need to be root at runtime in order to create files in
-# /home/shared
-# USER ${USER}:${USER}
-WORKDIR $HOME
+# ${CISA_HOME}/shared
+# USER ${CISA_USER}:${CISA_GROUP}
+WORKDIR ${CISA_HOME}
 ENTRYPOINT ["./scan.sh"]
