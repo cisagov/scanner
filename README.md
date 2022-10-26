@@ -154,7 +154,7 @@ Hub for a list of all the supported tags.
 
 | Mount point | Purpose        |
 |-------------|----------------|
-| `/home/cisa/shared`  |  Output |
+| `/home/cisa/shared` |  Output |
 
 ## Ports ##
 
