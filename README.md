@@ -1,4 +1,4 @@
-# NCATS pshtt, trustymail, and sslyze Scanner #
+# pshtt, trustymail, and sslyze Scanner #
 
 [![GitHub Build Status](https://github.com/cisagov/scanner/workflows/build/badge.svg)](https://github.com/cisagov/scanner/actions/workflows/build.yml)
 [![CodeQL](https://github.com/cisagov/scanner/workflows/CodeQL/badge.svg)](https://github.com/cisagov/scanner/actions/workflows/codeql-analysis.yml)
