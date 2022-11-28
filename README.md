@@ -89,7 +89,7 @@ environment variables.  See the
 
     services:
       scanner:
-        image: cisagov/trustymail_reporter:1.4.8
+        image: cisagov/scanner:1.2.3
         volumes:
           - type: bind
             source: <your_log_dir>
@@ -200,8 +200,8 @@ Build the image locally using this git repository as the [build context](https:/
 
 ```console
 docker build \
-  --build-arg VERSION=0.0.1 \
-  --tag cisagov/scanner:0.0.1 \
+  --build-arg VERSION=1.2.3 \
+  --tag cisagov/scanner:1.2.3 \
   https://github.com/cisagov/scanner.git#develop
 ```
 
@@ -231,9 +231,9 @@ Docker:
     docker buildx build \
       --file Dockerfile-x \
       --platform linux/amd64 \
-      --build-arg VERSION=0.0.1 \
+      --build-arg VERSION=1.2.3 \
       --output type=docker \
-      --tag cisagov/scanner:0.0.1 .
+      --tag cisagov/scanner:1.2.3 .
     ```
 
 ## Contributing ##
