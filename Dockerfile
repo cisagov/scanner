@@ -4,27 +4,34 @@ FROM python:3.6-slim-buster
 
 ARG VERSION
 
+###
 # For a list of pre-defined annotation keys and value types see:
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
+#
 # Note: Additional labels are added by the build workflow.
-LABEL org.opencontainers.image.authors="jeremy.frasier@cisa.dhs.gov"
+LABEL org.opencontainers.image.authors="vm-fusion-dev-group@trio.dhs.gov"
 LABEL org.opencontainers.image.vendor="Cybersecurity and Infrastructure Security Agency"
 
-ARG CISA_GID=421
-ARG CISA_UID=${CISA_GID}
-ENV CISA_USER="cisa"
+###
+# Unprivileged user setup variables
+###
+ARG CISA_UID=421
+ARG CISA_GID=${CISA_UID}
+ARG CISA_USER="cisa"
 ENV CISA_GROUP=${CISA_USER}
-ENV CISA_HOME="/home/cisa"
+    ENV CISA_HOME="/home/${CISA_USER}"
+
+###
+# Upgrade the system
+###
+RUN apt-get update --quiet --quiet \
+    && apt-get upgrade --quiet --quiet
 
 ###
 # Create unprivileged user
 ###
-RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP}
-RUN useradd --system --uid ${CISA_UID} --gid ${CISA_GROUP} --comment "${CISA_USER} user" ${CISA_USER}
-
-###
-# Install everything we need
-###
+RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP} \
+    && useradd --system --uid ${CISA_UID} --gid ${CISA_GROUP} --comment "${CISA_USER} user" ${CISA_USER}
 
 ###
 # Dependencies
@@ -83,7 +90,6 @@ RUN apt-get remove --quiet --quiet $INSTALL_DEPS
 ###
 RUN apt-get --quiet --quiet clean
 RUN rm -rf /var/lib/apt/lists/*
-
 
 ###
 # Setup working directory and entrypoint
