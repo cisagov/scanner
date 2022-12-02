@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SHARED_DIR='/home/cisa/shared'
+SHARED_DIR=${CISA_HOME}'/shared'
 
 echo "Creating artifacts folder..."
 mkdir -p $SHARED_DIR/artifacts/
@@ -30,7 +30,7 @@ cd $SHARED_DIR/artifacts/ || exit
 # See this link for an explanation as to why the VPC DNS limitation
 # was not initially a concern:
 # https://aws.amazon.com/blogs/compute/announcing-improved-vpc-networking-for-aws-lambda-functions/
-/home/cisa/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
+${CISA_HOME}/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
   --scan=pshtt \
   --lambda \
   --lambda-retries=1 \
@@ -41,7 +41,7 @@ cd $SHARED_DIR/artifacts/ || exit
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
 mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts
-/home/cisa/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
+${CISA_HOME}/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
   --scan=trustymail \
   --lambda \
   --lambda-retries=1 \
@@ -53,7 +53,7 @@ mv $SHARED_DIR/artifacts/results/pshtt.csv $SHARED_DIR/artifacts
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
 mv $SHARED_DIR/artifacts/results/trustymail.csv $SHARED_DIR/artifacts
-/home/cisa/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
+${CISA_HOME}/domain-scan/scan $SHARED_DIR/artifacts/scanme.csv \
   --scan=sslyze \
   --lambda \
   --lambda-retries=1 \
