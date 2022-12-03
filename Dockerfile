@@ -42,7 +42,7 @@ ENV DEPS \
     bash \
     redis-tools
 ENV INSTALL_DEPS \
-    git
+    curl
 RUN apt-get update --quiet --quiet
 RUN apt-get upgrade --quiet --quiet
 RUN apt-get install --quiet --quiet --yes \
@@ -69,9 +69,15 @@ RUN pip install --no-cache-dir --upgrade pshtt==0.6.6
 
 ###
 # Install domain-scan
+#
+# The SHELL command is used to ensure that if either the curl call or
+# the tar call fail then the image build fails. Source:
+# https://github.com/docker/docs/blob/main/develop/develop-images/dockerfile_best-practices.md#using-pipes
 ###
-RUN git clone https://github.com/18F/domain-scan \
-    ${CISA_HOME}/domain-scan/
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN mkdir ${CISA_HOME}/domain-scan \
+    && curl --location https://github.com/18F/domain-scan/tarball/master \
+    | tar --extract --gzip --strip-components 1 --directory ${CISA_HOME}/domain-scan/
 RUN pip install --no-cache-dir --upgrade \
     --requirement ${CISA_HOME}/domain-scan/requirements.txt
 
