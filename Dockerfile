@@ -33,15 +33,14 @@ RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP} \
 # Dependencies
 #
 # We need redis-tools so we can use redis-cli to communicate with
-# redis.  wget is used inside of gather-domains.sh.
+# redis.
 #
 # Install dependencies are only needed for software installation and
 # will be removed at the end of the build process.
 ###
 ENV DEPS \
     bash \
-    redis-tools \
-    wget
+    redis-tools
 ENV INSTALL_DEPS \
     git
 RUN apt-get update --quiet --quiet
