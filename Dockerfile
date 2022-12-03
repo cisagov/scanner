@@ -98,7 +98,7 @@ RUN rm -rf /var/lib/apt/lists/*
 # Put this just before we change users because the copy (and every
 # step after it) will always be rerun by docker, but we need to be
 # root for the chown command.
-COPY src ${CISA_HOME}
+COPY src/scan.sh ${CISA_HOME}
 RUN chown -R ${CISA_USER}:${CISA_GROUP} ${CISA_HOME}
 
 ###
