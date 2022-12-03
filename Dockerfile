@@ -98,7 +98,7 @@ COPY src/scan.sh ${CISA_HOME}
 RUN chown -R ${CISA_USER}:${CISA_GROUP} ${CISA_HOME}
 
 ###
-# Prepare to Run
+# Prepare to run
 ###
 # Right now we need to be root at runtime in order to create files in
 # ${CISA_HOME}/shared
