@@ -11,6 +11,8 @@ LABEL org.opencontainers.image.vendor="Cybersecurity and Infrastructure Security
 ###
 # Unprivileged user setup variables
 ###
+# TODO: Change this to 2048.  See cisagov/orchestrator#130 for more
+# details.
 ARG CISA_UID=421
 ARG CISA_GID=${CISA_UID}
 ARG CISA_USER="cisa"
@@ -105,8 +107,8 @@ RUN chown -R ${CISA_USER}:${CISA_GROUP} ${CISA_HOME}
 ###
 # Prepare to run
 ###
-# Right now we need to be root at runtime in order to create files in
-# ${CISA_HOME}/shared
+# TODO: Right now we need to be root at runtime in order to create
+# files in ${CISA_HOME}/shared, but see cisagov/orchestrator#130.
 # USER ${CISA_USER}:${CISA_GROUP}
 WORKDIR ${CISA_HOME}
 ENTRYPOINT ["./scan.sh"]
