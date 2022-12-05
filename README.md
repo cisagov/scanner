@@ -141,7 +141,7 @@ containerize.  It is recommended that most users use a version tag (e.g.
 | Image:tag | Description |
 |-----------|-------------|
 |`cisagov/scanner:1.3.0-rc.1`| An exact release version. |
-|`cisagov/scanner:1.2`| The most recent release matching the major and minor version numbers. |
+|`cisagov/scanner:1.3`| The most recent release matching the major and minor version numbers. |
 |`cisagov/scanner:1`| The most recent release matching the major version number. |
 |`cisagov/scanner:edge` | The most recent image built from a merge into the `develop` branch of this repository. |
 |`cisagov/scanner:nightly` | A nightly build of the `develop` branch of this repository. |
