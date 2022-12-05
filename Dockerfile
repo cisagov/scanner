@@ -74,7 +74,7 @@ RUN pip install --no-cache-dir --upgrade pshtt==0.6.6
 #
 # The SHELL command is used to ensure that if either the curl call or
 # the tar call fail then the image build fails. Source:
-# https://github.com/docker/docs/blob/main/develop/develop-images/dockerfile_best-practices.md#using-pipes
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes
 ###
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN mkdir ${CISA_HOME}/domain-scan \
