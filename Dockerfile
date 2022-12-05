@@ -35,8 +35,9 @@ RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP} \
 ###
 # Dependencies
 #
-# We need redis-tools so we can use redis-cli to communicate with
-# redis.
+# We need bash because it is not pre-installed on Alpine Linux and
+# scan.sh is a bash script.  We need redis-tools so we can use
+# redis-cli to communicate with redis.
 #
 # Install dependencies are only needed for software installation and
 # will be removed at the end of the build process.
