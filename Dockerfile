@@ -46,8 +46,6 @@ ENV DEPS \
     redis-tools
 ENV INSTALL_DEPS \
     curl
-RUN apt-get update --quiet --quiet
-RUN apt-get upgrade --quiet --quiet
 RUN apt-get install --quiet --quiet --yes \
     --no-install-recommends --no-install-suggests \
     $DEPS $INSTALL_DEPS
