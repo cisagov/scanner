@@ -2,20 +2,20 @@
 
 SHARED_DIR="${CISA_HOME}"/shared
 
-echo "Creating artifacts folder..."
+echo Creating artifacts folder...
 mkdir -p "${SHARED_DIR}"/artifacts/
 
-echo "Waiting for gatherer"
+echo Waiting for gatherer
 while [ "$(redis-cli -h redis get gathering_complete)" != "true" ]; do
   sleep 5
 done
-echo "Gatherer finished"
+echo Gatherer finished
 
 # No longer needed
 redis-cli -h orchestrator_redis_1 del gathering_complete
 
 # Run the https-scan scan
-echo "Running domain-scan scan"
+echo Running domain-scan scan
 cd "${SHARED_DIR}"/artifacts/ || exit
 # We run the three scans separately because we want to reduce the
 # concurrency for trustymail scans.  This is to avoid a situation
