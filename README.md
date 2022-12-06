@@ -32,7 +32,7 @@ expects the secrets in a different location.
 To run the `cisagov/scanner` image via Docker:
 
 ```console
-docker run cisagov/scanner:1.3.1
+docker run cisagov/scanner:1.3.2
 ```
 
 ### Running with Docker Compose ###
@@ -45,7 +45,7 @@ docker run cisagov/scanner:1.3.1
 
     services:
       scanner:
-        image: cisagov/scanner:1.3.1
+        image: cisagov/scanner:1.3.2
         volumes:
           - type: bind
             source: <your_log_dir>
@@ -89,7 +89,7 @@ environment variables.  See the
 
     services:
       scanner:
-        image: cisagov/scanner:1.3.1
+        image: cisagov/scanner:1.3.2
         volumes:
           - type: bind
             source: <your_log_dir>
@@ -126,7 +126,7 @@ environment variables.  See the
 1. Pull the new image:
 
     ```console
-    docker pull cisagov/scanner:1.3.1
+    docker pull cisagov/scanner:1.3.2
     ```
 
 1. Recreate and run the container by following the [previous instructions](#running-with-docker).
@@ -136,11 +136,11 @@ environment variables.  See the
 The images of this container are tagged with [semantic
 versions](https://semver.org) of the underlying example project that they
 containerize.  It is recommended that most users use a version tag (e.g.
-`:1.3.1`).
+`:1.3.2`).
 
 | Image:tag | Description |
 |-----------|-------------|
-|`cisagov/scanner:1.3.1`| An exact release version. |
+|`cisagov/scanner:1.3.2`| An exact release version. |
 |`cisagov/scanner:1.3`| The most recent release matching the major and minor version numbers. |
 |`cisagov/scanner:1`| The most recent release matching the major version number. |
 |`cisagov/scanner:edge` | The most recent image built from a merge into the `develop` branch of this repository. |
@@ -200,8 +200,8 @@ Build the image locally using this git repository as the [build context](https:/
 
 ```console
 docker build \
-  --build-arg VERSION=1.3.1 \
-  --tag cisagov/scanner:1.3.1 \
+  --build-arg VERSION=1.3.2 \
+  --tag cisagov/scanner:1.3.2 \
   https://github.com/cisagov/scanner.git#develop
 ```
 
@@ -231,9 +231,9 @@ Docker:
     docker buildx build \
       --file Dockerfile-x \
       --platform linux/amd64 \
-      --build-arg VERSION=1.3.1 \
+      --build-arg VERSION=1.3.2 \
       --output type=docker \
-      --tag cisagov/scanner:1.3.1 .
+      --tag cisagov/scanner:1.3.2 .
     ```
 
 ## Contributing ##
