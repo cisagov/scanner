@@ -1,4 +1,4 @@
-FROM python:3.6-slim-buster
+FROM python:3.7.16-slim-bullseye
 
 ###
 # For a list of pre-defined annotation keys and value types see:
