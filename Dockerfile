@@ -67,7 +67,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools
 # the file.  (trustymail imports only in the scan function, so it
 # isn't required here.)
 ###
-RUN pip install --no-cache-dir --upgrade pshtt==0.6.9
+RUN pip install --no-cache-dir --upgrade https://github.com/cisagov/pshtt/archive/v0.6.10-rc.1.tar.gz
 
 ###
 # Install domain-scan
