@@ -78,7 +78,7 @@ RUN pip install --no-cache-dir --upgrade pshtt==0.6.10
 ###
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN mkdir ${CISA_HOME}/domain-scan \
-    && curl --location https://github.com/cisagov/domain-scan/tarball/bug/switch_psl_helper_package \
+    && curl --location https://github.com/cisagov/domain-scan/tarball/master \
     | tar --extract --gzip --strip-components 1 --directory ${CISA_HOME}/domain-scan/
 RUN pip install --no-cache-dir --upgrade \
     --requirement ${CISA_HOME}/domain-scan/requirements.txt
