@@ -52,13 +52,16 @@ RUN apt-get install --quiet --quiet --yes \
     $DEPS $INSTALL_DEPS
 
 ###
-# Make sure pip and setuptools are the latest versions
+# Make sure pip, setuptools, and wheel are the latest versions
 #
-# Note that we use pip --no-cache-dir to avoid writing to a local
+# Note that we use pip3 --no-cache-dir to avoid writing to a local
 # cache.  This results in a smaller final image, at the cost of
 # slightly longer install times.
 ###
-RUN pip install --no-cache-dir --upgrade pip setuptools
+RUN pip3 install --no-cache-dir --upgrade \
+    pip \
+    setuptools \
+    wheel
 
 ###
 # We're using Lambda, but we need to install pshtt locally because the
@@ -67,7 +70,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools
 # the file.  (trustymail imports only in the scan function, so it
 # isn't required here.)
 ###
-RUN pip install --no-cache-dir --upgrade pshtt==0.6.10
+RUN pip3 install --no-cache-dir --upgrade pshtt==0.6.10
 
 ###
 # Install domain-scan
@@ -80,7 +83,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN mkdir ${CISA_HOME}/domain-scan \
     && curl --location https://github.com/cisagov/domain-scan/tarball/master \
     | tar --extract --gzip --strip-components 1 --directory ${CISA_HOME}/domain-scan/
-RUN pip install --no-cache-dir --upgrade \
+RUN pip3 install --no-cache-dir --upgrade \
     --requirement ${CISA_HOME}/domain-scan/requirements.txt
 
 ###
