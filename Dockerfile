@@ -70,7 +70,9 @@ RUN pip3 install --no-cache-dir --upgrade \
 # the file.  (trustymail imports only in the scan function, so it
 # isn't required here.)
 ###
-RUN pip3 install --no-cache-dir --upgrade pshtt==0.6.10
+# RUN pip3 install --no-cache-dir --upgrade pshtt==0.6.10
+# This is to test cisagov/pshtt#214
+RUN pip3 install --no-cache-dir --upgrade https://github.com/freedomofpress/pshtt/archive/sslyze3-support.tar.gz
 
 ###
 # Install domain-scan
