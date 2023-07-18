@@ -41,7 +41,7 @@ jobs:
     # and style deviations.
     name: "Lint sources"
     runs-on: ubuntu-latest
-    continue-on-error: ${{ github.event.inputs.remote-shell == 'true' || false }}
+    continue-on-error: ${{ github.event.inputs.remote-shell == 'true' }}
     steps:
       - id: setup-env
         uses: cisagov/setup-env-github-action@develop
@@ -126,7 +126,7 @@ jobs:
         run: pre-commit run --all-files
       - name: Setup tmate debug session
         uses: mxschmitt/action-tmate@v3
-        if: env.RUN_TMATE
+        if: (success() || failure()) && env.RUN_TMATE
   prepare:
     # Calculates and publishes outputs that are used by other jobs.
     #
