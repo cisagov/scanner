@@ -33,7 +33,7 @@ env:
   # #65.
   PLATFORMS: "linux/amd64"
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
-  RUN_TMATE: ${{ secrets.RUN_TMATE }}
+  RUN_TMATE: ${{ github.event.inputs.remote-shell == 'true' || secrets.RUN_TMATE }}
 
 jobs:
   lint:
@@ -41,6 +41,7 @@ jobs:
     # and style deviations.
     name: "Lint sources"
     runs-on: ubuntu-latest
+    continue-on-error: ${{ github.event.inputs.remote-shell == 'true' || false }}
     steps:
       - id: setup-env
         uses: cisagov/setup-env-github-action@develop
@@ -225,7 +226,7 @@ jobs:
           echo tags=${TAGS}
       - name: Setup tmate debug session
         uses: mxschmitt/action-tmate@v3
-        if: github.event.inputs.remote-shell == 'true' || env.RUN_TMATE
+        if: env.RUN_TMATE
   build:
     # Builds a single test image for the native platform.  This image is saved
     # as an artifact and loaded by the test job.
