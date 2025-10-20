@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "hash": {
+      "sha256": "ade2727ed14697ce29bf60c173cefde5071a289bc72f0e5476706cde175b01ff"
+    },
+    "pipfile-spec": 6,
+    "requires": {
+      "python_full_version": "3.13.5"
+    },
+    "sources": [
+      {
+        "name": "pypi",
+        "url": "https://pypi.org/simple",
+        "verify_ssl": true
+      }
+    ]
+  },
+  "default": {
+    "docopt": {
+      "hashes": [
+        "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
+      ],
+      "version": "==0.6.2"
+    },
+    "example": {
+      "file": "https://github.com/cisagov/skeleton-python-library/archive/v0.2.2.tar.gz"
+    },
+    "schema": {
+      "hashes": [
+        "sha256:5d976a5b50f36e74e2157b47097b60002bd4d42e65425fcc9c9befadb4255dde",
+        "sha256:7da553abd2958a19dc2547c388cde53398b39196175a9be59ea1caf5ab0a1807"
+      ],
+      "version": "==0.7.7"
+    },
+    "setuptools": {
+      "hashes": [
+        "sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922",
+        "sha256:f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c"
+      ],
+      "markers": "python_version >= '3.9'",
+      "version": "==80.9.0"
+    }
+  },
+  "develop": {}
+}

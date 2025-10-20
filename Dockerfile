@@ -1,3 +1,5 @@
+# Official Docker images are in the form library/<app> while non-official
+# images are in the form <user>/<app>.
 FROM python:3.7.17-slim-bookworm
 
 ###
@@ -33,7 +35,8 @@ RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP} \
     && useradd --system --uid ${CISA_UID} --gid ${CISA_GROUP} --comment "${CISA_USER} user" --create-home ${CISA_USER}
 
 ###
-# Dependencies
+# Copy in the Python virtual environment created in compile-stage, symlink the
+# Python binary in the venv to the system-wide Python, and add the venv to the PATH.
 #
 # We need bash because it is not pre-installed on Alpine Linux and
 # scan.sh is a bash script.  We need redis-tools so we can use

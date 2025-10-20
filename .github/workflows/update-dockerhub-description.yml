@@ -1,15 +1,14 @@
 ---
-name: sync-labels
+name: Update the Docker Hub description
+
 
 on:  # yamllint disable-line rule:truthy
   push:
+    branches:
+      - develop
     paths:
-      - .github/labels.yml
-      - .github/workflows/sync-labels.yml
+      - README.md
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 jobs:
   diagnostics:
@@ -48,14 +47,22 @@ jobs:
           # monitoring configuration *does not* require you to modify
           # this workflow.
           permissions_monitoring_config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
-  labeler:
+  repo-metadata:
+    name: Gather repository metadata
     needs:
       - diagnostics
     permissions:
       # actions/checkout needs this to fetch code
       contents: read
-      # crazy-max/ghaction-github-labeler needs this to manage repository labels
-      issues: write
+    uses: ./.github/workflows/_repo-metadata.yml
+  update:
+    name: Update the description for the image on Docker Hub
+    needs:
+      - diagnostics
+      - repo-metadata
+    permissions:
+      # actions/checkout needs this to fetch code
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Apply standard cisagov job preamble
@@ -68,7 +75,7 @@ jobs:
           # monitor_permissions equal to "true".
           #
           # TODO: Re-enable this functionality when practical.  See
-          # cisagov/skeleton-generic#207 for more details.
+          # cisagov/skeleton-docker#224 for more details.
           monitor_permissions: "false"
           # Use a variable to specify the permissions monitoring
           # configuration. By default this will yield the
@@ -84,11 +91,13 @@ jobs:
           # monitoring configuration *does not* require you to modify
           # this workflow.
           permissions_monitoring_config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
-      - uses: actions/checkout@v5
-      - name: Sync repository labels
-        if: success()
-        uses: crazy-max/ghaction-github-labeler@v5
+      - name: Checkout the repository
+        uses: actions/checkout@v5
+      - name: Update the Docker Hub description
+        uses: peter-evans/dockerhub-description@v5
         with:
-          # This is a hideous ternary equivalent so we only do a dry run unless
-          # this workflow is triggered by the develop branch.
-          dry-run: ${{ github.ref_name == 'develop' && 'false' || 'true' }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          readme-filepath: README.md
+          repository: ${{ needs.repo-metadata.outputs.image-name }}
+          short-description: ${{ github.event.repository.description }}
+          username: ${{ secrets.DOCKER_USERNAME }}

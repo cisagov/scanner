@@ -6,68 +6,119 @@
 # or to provide custom queries or build logic.
 name: CodeQL
 
+# The use of on here as a key is part of the GitHub actions syntax.
+# yamllint disable-line rule:truthy
 on:
+  merge_group:
+    types:
+      - checks_requested
+  pull_request:
+    # The branches here must be a subset of the ones in the push key
+    branches:
+      - develop
   push:
-    # Dependabot triggered push events have read-only access, but uploading code
+    # Dependabot-triggered push events have read-only access, but uploading code
     # scanning requires write access.
     branches-ignore:
       - dependabot/**
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches:
-      - develop
   schedule:
-    - cron: '0 21 * * 6'
+    - cron: 0 21 * * 6
 
 jobs:
   diagnostics:
     name: Run diagnostics
+    # This job does not need any permissions
+    permissions: {}
     runs-on: ubuntu-latest
     steps:
       # Note that a duplicate of this step must be added at the top of
       # each job.
-      - id: harden-runner
-        name: Harden the runner
-        uses: step-security/harden-runner@v2
+      - name: Apply standard cisagov job preamble
+        uses: cisagov/action-job-preamble@v1
         with:
-          egress-policy: audit
-      - id: github-status
-        name: Check GitHub status
-        uses: crazy-max/ghaction-github-status@v3
-      - id: dump-context
-        name: Dump context
-        uses: crazy-max/ghaction-dump-context@v2
+          check_github_status: "true"
+          # This functionality is poorly implemented and has been
+          # causing problems due to the MITM implementation hogging or
+          # leaking memory.  As a result we disable it by default.  If
+          # you want to temporarily enable it, simply set
+          # monitor_permissions equal to "true".
+          #
+          # TODO: Re-enable this functionality when practical.  See
+          # cisagov/skeleton-generic#207 for more details.
+          monitor_permissions: "false"
+          output_workflow_context: "true"
+          # Use a variable to specify the permissions monitoring
+          # configuration. By default this will yield the
+          # configuration stored in the cisagov organization-level
+          # variable, but if you want to use a different configuration
+          # then simply:
+          # 1. Create a repository-level variable with the name
+          # ACTIONS_PERMISSIONS_CONFIG.
+          # 2. Set this new variable's value to the configuration you
+          # want to use for this repository.
+          #
+          # Note in particular that changing the permissions
+          # monitoring configuration *does not* require you to modify
+          # this workflow.
+          permissions_monitoring_config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
   analyze:
     name: Analyze
     needs:
       - diagnostics
     runs-on: ubuntu-latest
     permissions:
+      # actions/checkout needs this to fetch code
+      contents: read
       # required for all workflows
       security-events: write
     strategy:
       fail-fast: false
       matrix:
-        # Override automatic language detection by changing the below list
-        # Supported options are go, javascript, csharp, python, cpp, and java
+        # Override automatic language detection by changing the below
+        # list
+        #
+        # Supported options are actions, c-cpp, csharp, go,
+        # java-kotlin, javascript-typescript, python, ruby, and swift.
         language:
+          - actions
           - python
         # Learn more...
         # https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#overriding-automatic-language-detection
 
     steps:
-      - id: harden-runner
-        name: Harden the runner
-        uses: step-security/harden-runner@v2
+      - name: Apply standard cisagov job preamble
+        uses: cisagov/action-job-preamble@v1
         with:
-          egress-policy: audit
+          # This functionality is poorly implemented and has been
+          # causing problems due to the MITM implementation hogging or
+          # leaking memory.  As a result we disable it by default.  If
+          # you want to temporarily enable it, simply set
+          # monitor_permissions equal to "true".
+          #
+          # TODO: Re-enable this functionality when practical.  See
+          # cisagov/skeleton-generic#207 for more details.
+          monitor_permissions: "false"
+          # Use a variable to specify the permissions monitoring
+          # configuration. By default this will yield the
+          # configuration stored in the cisagov organization-level
+          # variable, but if you want to use a different configuration
+          # then simply:
+          # 1. Create a repository-level variable with the name
+          # ACTIONS_PERMISSIONS_CONFIG.
+          # 2. Set this new variable's value to the configuration you
+          # want to use for this repository.
+          #
+          # Note in particular that changing the permissions
+          # monitoring configuration *does not* require you to modify
+          # this workflow.
+          permissions_monitoring_config: ${{ vars.ACTIONS_PERMISSIONS_CONFIG }}
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
@@ -75,7 +126,7 @@ jobs:
       # Java). If this step fails, then you should remove it and run the build
       # manually (see below).
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v3
 
       # ℹ️ Command-line programs to run using the OS shell.
       # 📚 https://git.io/JvXDl
@@ -89,4 +140,4 @@ jobs:
       #     make release
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
