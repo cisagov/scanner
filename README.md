@@ -40,7 +40,7 @@ docker run cisagov/scanner:1.3.7
 
     ```yaml
     ---
-    name: skeleton-docker
+    name: scanner
 
     services:
       scanner:
@@ -80,7 +80,7 @@ environment variables.  See the
 
     ```yaml
     ---
-    name: skeleton-docker
+    name: scanner
 
     secrets:
       aws_config:
