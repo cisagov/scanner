@@ -125,13 +125,11 @@ RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP} \
 # Install dependencies are only needed for software installation and
 # will be removed at the end of the build process.
 ###
-ENV DEPS \
-    bash \
-    redis-tools
 RUN apt update
 RUN apt install --quiet --quiet --yes \
     --no-install-recommends --no-install-suggests \
-    $DEPS
+    bash \
+    redis-tools
 
 ###
 # Copy in the Python virtual environment created in compile-stage, symlink the
