@@ -18,8 +18,8 @@ ENV PYTHON_WHEEL_VERSION=0.38.4
 
 # Install the system package dependencies necessary to set up the image's Python
 # virtual environment.
-RUN apt-get update
-RUN apt-get install --quiet --quiet --yes \
+RUN apt update
+RUN apt install --quiet --quiet --yes \
   --no-install-recommends --no-install-suggests \
   python3=3.11.2-1+b1 \
   python3-cryptography=38.0.4-3+deb12u1 \
@@ -73,7 +73,7 @@ RUN pipenv install --clear --deploy --extra-pip-args "--no-cache-dir" --verbose
 # the tar call fail then the image build fails. Source:
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes
 ###
-RUN apt-get install --quiet --quiet --yes \
+RUN apt install --quiet --quiet --yes \
   --no-install-recommends --no-install-suggests \
   curl
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -128,8 +128,8 @@ RUN groupadd --system --gid ${CISA_GID} ${CISA_GROUP} \
 ENV DEPS \
     bash \
     redis-tools
-RUN apt-get update
-RUN apt-get install --quiet --quiet --yes \
+RUN apt update
+RUN apt install --quiet --quiet --yes \
     --no-install-recommends --no-install-suggests \
     $DEPS
 
@@ -152,7 +152,7 @@ COPY --from=compile-stage --chown=${CISA_USER}:${CISA_GROUP} ${CISA_HOME}/domain
 ###
 # Clean up aptitude cruft
 ###
-RUN apt-get --quiet --quiet clean
+RUN apt clean --quiet --quiet
 RUN rm -rf /var/lib/apt/lists/*
 
 ###
