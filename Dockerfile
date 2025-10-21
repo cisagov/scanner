@@ -19,6 +19,10 @@ ENV PYTHON_WHEEL_VERSION=0.38.4
 # Install the system package dependencies necessary to set up the image's Python
 # virtual environment.
 RUN apt update
+# The versions here are those currently offered by Debian Bookworm.
+# We pin the versions in the interest of reproducible builds; if newer
+# versions are made available then the build will fail and we will be
+# prompted to fix it and possibly bump the version.
 RUN apt install --quiet --quiet --yes \
   --no-install-recommends --no-install-suggests \
   python3=3.11.2-1+b1 \
