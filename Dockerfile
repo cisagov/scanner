@@ -16,43 +16,24 @@ ENV PYTHON_PIPENV_VERSION=2023.10.3
 ENV PYTHON_SETUPTOOLS_VERSION=68.0.0
 ENV PYTHON_WHEEL_VERSION=0.42.0
 
-# Install the system package dependencies necessary to set up the image's Python
-# virtual environment.
-RUN apt update
-# The versions here are those currently offered by Debian Bookworm.
-# We pin the versions in the interest of reproducible builds; if newer
-# versions are made available then the build will fail and we will be
-# prompted to fix it and possibly bump the version.
-RUN apt install --quiet --quiet --yes \
-  --no-install-recommends --no-install-suggests \
-  python3=3.11.2-1+b1 \
-  python3-cryptography=38.0.4-3+deb12u1 \
-  python3-dev=3.11.2-1+b1 \
-  python3-pip=23.0.1+dfsg-1 \
-  python3-setuptools=66.1.1-1+deb12u2 \
-  python3-wheel=0.38.4-2
-
 ###
-# Create a Python virtual environment (venv) for setup (due to PEP 668); install the
-# specified versions of pip, setuptools, and wheel into the setup venv; install the
-# specified version of pipenv into the setup venv; create the image dependency venv;
-# and install the specified versions of pip, setuptools, and wheel into the dependency
-# venv.
+# Install the specified versions of pip, setuptools, and wheel;
+# install the specified version of pipenv; create the image dependency
+# venv; and install the specified versions of pip, setuptools, and
+# wheel into the dependency venv.
 #
 # Note that we use the --no-cache-dir flag to avoid writing to a local
 # cache.  This results in a smaller final image, at the cost of
 # slightly longer install times.
 ###
-RUN python3 -m venv --system-site-packages /usr/local \
-    # Ensure the core Python packages are installed in the virtual environment
-    && /usr/local/bin/python3 -m pip install --no-cache-dir --upgrade \
+RUN python3 -m pip install --no-cache-dir --upgrade \
         pip==${PYTHON_PIP_VERSION} \
         setuptools==${PYTHON_SETUPTOOLS_VERSION} \
         wheel==${PYTHON_WHEEL_VERSION} \
-    && /usr/local/bin/python3 -m pip install --no-cache-dir --upgrade \
+    && python3 -m pip install --no-cache-dir --upgrade \
         pipenv==${PYTHON_PIPENV_VERSION} \
     # Manually create the virtual environment
-    && python3 -m venv --system-site-packages ${VIRTUAL_ENV} \
+    && python3 -m venv ${VIRTUAL_ENV} \
     # Ensure the core Python packages are installed in the virtual environment
     && ${VIRTUAL_ENV}/bin/python3 -m pip install --no-cache-dir --upgrade \
         pip==${PYTHON_PIP_VERSION} \
