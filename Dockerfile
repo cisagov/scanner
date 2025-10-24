@@ -10,11 +10,11 @@ ENV CISA_HOME="/home/${CISA_USER}"
 ENV VIRTUAL_ENV="${CISA_HOME}/.venv"
 
 # Versions of the Python packages installed directly
-ENV PYTHON_PIP_VERSION=23.0.1
+ENV PYTHON_PIP_VERSION=24.0
 # This is the latest version of pipenv available for Python 3.7.17.
 ENV PYTHON_PIPENV_VERSION=2023.10.3
-ENV PYTHON_SETUPTOOLS_VERSION=66.1.1
-ENV PYTHON_WHEEL_VERSION=0.38.4
+ENV PYTHON_SETUPTOOLS_VERSION=68.0.0
+ENV PYTHON_WHEEL_VERSION=0.42.0
 
 # Install the system package dependencies necessary to set up the image's Python
 # virtual environment.
