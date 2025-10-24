@@ -58,9 +58,10 @@ RUN pipenv install --clear --deploy --extra-pip-args "--no-cache-dir" --verbose
 # the tar call fail then the image build fails. Source:
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes
 ###
-RUN apt install --quiet --quiet --yes \
-  --no-install-recommends --no-install-suggests \
-  curl
+RUN apt update --quiet --quiet \
+    && apt install --quiet --quiet --yes \
+    --no-install-recommends --no-install-suggests \
+    curl
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN mkdir ${CISA_HOME}/domain-scan \
   && curl --location https://github.com/cisagov/domain-scan/tarball/master \
