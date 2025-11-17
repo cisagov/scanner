@@ -1,5 +1,5 @@
-#!/usr/bin/env pytest -vs
 """Tests for scanner container."""
+
 # TODO: Make container tests functional
 # See https://github.com/cisagov/scanner/issues/64
 
@@ -44,6 +44,7 @@ def test_container_count(dockerc):
 #     # make sure container exited if running test isolated
 #     dockerc.wait(main_container.id)
 #     log_output = main_container.logs()
+#     assert DIVISION_MESSAGE in log_output, "Division message not found in log output."
 #     assert SECRET_QUOTE in log_output, "Secret not found in log output."
 
 
@@ -51,39 +52,30 @@ def test_container_count(dockerc):
 # @pytest.mark.skipif(
 #     RELEASE_TAG in [None, ""], reason="this is not a release (RELEASE_TAG not set)"
 # )
-# def test_release_version():
+# def test_release_version(project_version):
 #     """Verify that release tag version agrees with the module version."""
-#     pkg_vars = {}
-#     with open(VERSION_FILE) as f:
-#         exec(f.read(), pkg_vars)  # nosec
-#     project_version = pkg_vars["__version__"]
 #     assert (
 #         RELEASE_TAG == f"v{project_version}"
 #     ), "RELEASE_TAG does not match the project version"
 
 
 # See #64
-# def test_log_version(dockerc, version_container):
+# def test_log_version(dockerc, project_version, version_container):
 #     """Verify the container outputs the correct version to the logs."""
 #     # make sure container exited if running test isolated
 #     dockerc.wait(version_container.id)
-#     log_output = version_container.logs().strip()
-#     pkg_vars = {}
-#     with open(VERSION_FILE) as f:
-#         exec(f.read(), pkg_vars)  # nosec
-#     project_version = pkg_vars["__version__"]
-#     assert (
-#         log_output == project_version
+#     log_version = parse_version_info(version_container.logs().strip())
+#     assert log_version == parse_version_info(
+#         project_version
 #     ), f"Container version output to log does not match project version file {VERSION_FILE}"
 
 
 # See #64
-# def test_container_version_label_matches(version_container):
+# @pytest.mark.skipif(
+#     RELEASE_TAG in [None, ""], reason="this is not a release (RELEASE_TAG not set)"
+# )
+# def test_container_version_label_matches(project_version, version_container):
 #     """Verify the container version label is the correct version."""
-#     pkg_vars = {}
-#     with open(VERSION_FILE) as f:
-#         exec(f.read(), pkg_vars)  # nosec
-#     project_version = pkg_vars["__version__"]
 #     assert (
 #         version_container.config.labels["org.opencontainers.image.version"]
 #         == project_version

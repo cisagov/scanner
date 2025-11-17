@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+# List any Python dependencies for the image here
+[packages]
+# We're using Lambda, but we need to install pshtt locally because the
+# pshtt.py and sslyze.py files in the scanners directory of
+# 18F/domain-scan import pshtt and sslyze, respectively, at the top of
+# the file.  (trustymail imports only in the scan function, so it
+# isn't required here.)
+pshtt = "0.6.10"
+
+# This version should match the version of Python in the image
+[requires]
+python_full_version = "3.7.17"
