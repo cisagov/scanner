@@ -1,6 +1,6 @@
 # Official Docker images are in the form library/<app> while non-official
 # images are in the form <user>/<app>.
-FROM docker.io/library/python:3.7.17-slim-bookworm AS compile-stage
+FROM docker.io/library/python:3.14.1-slim-bookworm AS compile-stage
 
 ###
 # Unprivileged user variables
@@ -72,7 +72,7 @@ RUN pipenv install --clear --extra-pip-args "--no-cache-dir" --verbose \
 
 # Official Docker images are in the form library/<app> while non-official
 # images are in the form <user>/<app>.
-FROM docker.io/library/python:3.7.17-slim-bookworm AS build-stage
+FROM docker.io/library/python:3.14.1-slim-bookworm AS build-stage
 
 ###
 # For a list of pre-defined annotation keys and value types see:
