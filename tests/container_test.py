@@ -64,8 +64,8 @@ def test_container_count(dockerc):
 #     """Verify the container outputs the correct version to the logs."""
 #     # make sure container exited if running test isolated
 #     dockerc.wait(version_container.id)
-#     log_version = parse_version_info(version_container.logs().strip())
-#     assert log_version == parse_version_info(
+#     log_version = semver.version.Version.parse(version_container.logs().strip())
+#     assert log_version == semver.version.Version.parse(
 #         project_version
 #     ), f"Container version output to log does not match project version file {VERSION_FILE}"
 

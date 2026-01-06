@@ -1,6 +1,7 @@
 # pshtt, trustymail, and sslyze Scanner #
 
 [![GitHub Build Status](https://github.com/cisagov/scanner/workflows/build/badge.svg)](https://github.com/cisagov/scanner/actions/workflows/build.yml)
+[![License](https://img.shields.io/github/license/cisagov/scanner)](https://spdx.org/licenses/)
 [![CodeQL](https://github.com/cisagov/scanner/workflows/CodeQL/badge.svg)](https://github.com/cisagov/scanner/actions/workflows/codeql-analysis.yml)
 
 ## Docker Image ##
