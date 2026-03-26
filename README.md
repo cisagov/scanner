@@ -138,9 +138,6 @@ Both updating dependencies and changing the [Pipenv] configuration in `src/Pipfi
 will result in a modified `src/Pipfile.lock` file that should be committed to the
 repository.
 
-> [!WARNING]
-> The `src/Pipfile.lock` as generated will fail `pre-commit` checks due to JSON formatting.
-
 ### Updating dependencies ###
 
 If you want to update existing dependencies you would run the following command
@@ -168,22 +165,22 @@ containerize.  It is recommended that most users use a version tag (e.g.
 `:1.4.0`).
 
 | Image:tag | Description |
-|-----------|-------------|
-|`cisagov/scanner:1.4.0`| An exact release version. |
-|`cisagov/scanner:1.3`| The most recent release matching the major and minor version numbers. |
-|`cisagov/scanner:1`| The most recent release matching the major version number. |
-|`cisagov/scanner:edge` | The most recent image built from a merge into the `develop` branch of this repository. |
-|`cisagov/scanner:nightly` | A nightly build of the `develop` branch of this repository. |
-|`cisagov/scanner:latest`| The most recent release image pushed to a container registry.  Pulling an image using the `:latest` tag [should be avoided.](https://vsupalov.com/docker-latest-tag/) |
+| --------- | ----------- |
+| `cisagov/scanner:1.4.0` | An exact release version. |
+| `cisagov/scanner:1.3` | The most recent release matching the major and minor version numbers. |
+| `cisagov/scanner:1` | The most recent release matching the major version number. |
+| `cisagov/scanner:edge` | The most recent image built from a merge into the `develop` branch of this repository. |
+| `cisagov/scanner:nightly` | A nightly build of the `develop` branch of this repository. |
+| `cisagov/scanner:latest` | The most recent release image pushed to a container registry.  Pulling an image using the `:latest` tag [should be avoided.](https://vsupalov.com/docker-latest-tag/) |
 
 See the [tags tab](https://hub.docker.com/r/cisagov/scanner/tags) on Docker
 Hub for a list of all the supported tags.
 
 ## Volumes ##
 
-| Mount point | Purpose        |
-|-------------|----------------|
-| `/home/cisa/shared` |  Output |
+| Mount point | Purpose |
+| ----------- | ------- |
+| `/home/cisa/shared` | Output |
 
 ## Ports ##
 
@@ -191,8 +188,8 @@ There are no ports exposed by this container.
 
 <!-- The following ports are exposed by this container: -->
 
-<!-- | Port | Purpose        | -->
-<!-- |------|----------------| -->
+<!-- | Port | Purpose | -->
+<!-- | ---- | ------- | -->
 <!-- | 8080 | Example only; nothing is actually listening on the port | -->
 
 <!-- The sample [Docker composition](docker-compose.yml) publishes the -->
@@ -206,21 +203,21 @@ There are no required environment variables.
 
 <!--
 | Name  | Purpose | Default |
-|-------|---------|---------|
+| ----- | ------- | ------- |
 | `REQUIRED_VARIABLE` | Describe its purpose. | `null` |
 -->
 
 ### Optional ###
 
-| Name  | Purpose | Default |
-|-------|---------|---------|
+| Name | Purpose | Default |
+| ---- | ------- | ------- |
 | `AWS_CONFIG_FILE` | The path to the configuration file containing the AWS credentials. | `null` |
 | `AWS_PROFILE` | The AWS profile to use. | `null` |
 
 ## Secrets ##
 
-| Filename     | Purpose |
-|--------------|---------|
+| Filename | Purpose |
+| -------- | ------- |
 | aws_config | AWS credentials allowing read-only access to the Elasticsearch DMARC database in [this format](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) |
 
 ## Building from source ##
