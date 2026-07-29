@@ -40,32 +40,32 @@ cd "${SHARED_DIR}"/artifacts/ || exit
   --workers=40
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
-mv "${SHARED_DIR}"/artifacts/results/pshtt.csv "${SHARED_DIR}"/artifacts
-"${CISA_HOME}"/domain-scan/scan "${SHARED_DIR}"/artifacts/scanme.csv \
-  --scan=trustymail \
-  --lambda \
-  --lambda-retries=1 \
-  --debug \
-  --meta \
-  --cache \
-  --workers=25 \
-  --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
+# mv "${SHARED_DIR}"/artifacts/results/pshtt.csv "${SHARED_DIR}"/artifacts
+# "${CISA_HOME}"/domain-scan/scan "${SHARED_DIR}"/artifacts/scanme.csv \
+#   --scan=trustymail \
+#   --lambda \
+#   --lambda-retries=1 \
+#   --debug \
+#   --meta \
+#   --cache \
+#   --workers=25 \
+#   --smtp-localhost=ec2-100-27-42-254.compute-1.amazonaws.com
 # This file would get deleted when we rerun domain-scan/scan if it
 # stayed where it is
-mv "${SHARED_DIR}"/artifacts/results/trustymail.csv "${SHARED_DIR}"/artifacts
-"${CISA_HOME}"/domain-scan/scan "${SHARED_DIR}"/artifacts/scanme.csv \
-  --scan=sslyze \
-  --lambda \
-  --lambda-retries=1 \
-  --debug \
-  --meta \
-  --cache \
-  --workers=40
+# mv "${SHARED_DIR}"/artifacts/results/trustymail.csv "${SHARED_DIR}"/artifacts
+# "${CISA_HOME}"/domain-scan/scan "${SHARED_DIR}"/artifacts/scanme.csv \
+#   --scan=sslyze \
+#   --lambda \
+#   --lambda-retries=1 \
+#   --debug \
+#   --meta \
+#   --cache \
+#   --workers=40
 # Restore the files that we had temporarily copied to a safe place
 #
 # Note that we cannot wrap {pshtt,trustymail} in double quotes, since
 # that would force the braces to be interpreted as literals.
-mv "${SHARED_DIR}"/artifacts/{pshtt,trustymail}.csv "${SHARED_DIR}"/artifacts/results
+# mv "${SHARED_DIR}"/artifacts/{pshtt,trustymail}.csv "${SHARED_DIR}"/artifacts/results
 
 # Let redis know we're done
 redis-cli -h redis set scanning_complete true
