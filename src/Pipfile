@@ -10,8 +10,8 @@ name = "pypi"
 # 18F/domain-scan import pshtt and sslyze, respectively, at the top of
 # the file.  (trustymail imports only in the scan function, so it
 # isn't required here.)
-pshtt = "0.6.10"
+pshtt = "0.7.6"
 
 # This version should match the version of Python in the image
 [requires]
-python_full_version = "3.7.17"
+python_full_version = "3.10.22"
