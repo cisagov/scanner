@@ -1,6 +1,6 @@
 # Official Docker images are in the form library/<app> while non-official
 # images are in the form <user>/<app>.
-FROM docker.io/library/python:3.7.17-slim-bookworm AS compile-stage
+FROM docker.io/library/python:3.10.22-slim-trixie AS compile-stage
 
 ###
 # Unprivileged user variables
@@ -10,10 +10,10 @@ ENV CISA_HOME="/home/${CISA_USER}"
 ENV VIRTUAL_ENV="${CISA_HOME}/.venv"
 
 # Versions of the Python packages installed directly
-ENV PYTHON_PIP_VERSION=24.0
-# This is the latest version of pipenv available for Python 3.7.17.
-ENV PYTHON_PIPENV_VERSION=2023.10.3
-ENV PYTHON_SETUPTOOLS_VERSION=68.0.0
+ENV PYTHON_PIP_VERSION=26.3
+# This is the latest version of pipenv available for Python 3.10.22.
+ENV PYTHON_PIPENV_VERSION=2026.10.4
+ENV PYTHON_SETUPTOOLS_VERSION=84.2.1
 
 ###
 # Install the specified versions of pip and setuptools into the system
@@ -46,7 +46,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade \
 ###
 WORKDIR /tmp
 COPY src/Pipfile src/Pipfile.lock ./
-RUN pipenv install --clear --deploy --extra-pip-args "--no-cache-dir" --verbose
+RUN pipenv install --clear --deploy --extra-pip-args="--no-cache-dir" --verbose
 
 ###
 # Install domain-scan
@@ -64,12 +64,12 @@ RUN mkdir ${CISA_HOME}/domain-scan \
   && curl --location https://github.com/cisagov/domain-scan/tarball/master \
   | tar --extract --gzip --strip-components 1 --directory ${CISA_HOME}/domain-scan/
 # We can't use --deploy with --requirements
-RUN pipenv install --clear --extra-pip-args "--no-cache-dir" --verbose \
+RUN pipenv install --clear --extra-pip-args="--no-cache-dir" --verbose \
   --requirements ${CISA_HOME}/domain-scan/requirements.txt
 
 # Official Docker images are in the form library/<app> while non-official
 # images are in the form <user>/<app>.
-FROM docker.io/library/python:3.7.17-slim-bookworm AS build-stage
+FROM docker.io/library/python:3.10.22-slim-trixie AS build-stage
 
 ###
 # For a list of pre-defined annotation keys and value types see:
