@@ -12,9 +12,9 @@ services:
     command:
       - redis-server
       - --requirepass
-      - ${REDIS_PASSWORD:-gatherer-dev-only}
+      - ${REDIS_PASSWORD:-scanner-dev-only}
     environment:
-      REDISCLI_AUTH: ${REDIS_PASSWORD:-gatherer-dev-only}
+      REDISCLI_AUTH: ${REDIS_PASSWORD:-scanner-dev-only}
     healthcheck:
       test:
         - CMD
@@ -39,7 +39,7 @@ services:
       # Setting this environment variable ensures that the config file
       # (and not just any credentials file that is present) is loaded.
       AWS_SDK_LOAD_CONFIG: 1
-      REDISCLI_AUTH: ${REDIS_PASSWORD:-gatherer-dev-only}
+      REDISCLI_AUTH: ${REDIS_PASSWORD:-scanner-dev-only}
     image: cisagov/scanner
     init: true
     restart: "no"
