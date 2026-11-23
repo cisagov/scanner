@@ -14,7 +14,8 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     environment:
       AWS_CONFIG_FILE: /run/secrets/aws_config
       # Setting this environment variable ensures that the config file
@@ -32,4 +33,15 @@ services:
       - redis-server
       - --requirepass
       - ${REDIS_PASSWORD:-gatherer-dev-only}
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD:-gatherer-dev-only}
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
     image: redis:alpine
